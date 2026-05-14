@@ -24,14 +24,14 @@ async function run() {
     .png({ compressionLevel: 9 })
     .toFile(path.join(appDir, "apple-icon.png"));
 
-  // OG image: 1200x630 navy background + logo + gold underline + text
-  // Use the transparent (removebg) variant so the logo composites cleanly
-  // onto the navy brand background instead of carrying its own grey backdrop
+  // OG image: 1200x630 navy background + logo on a light badge + gold-accented text
+  // The logo (logo_small-removebg.png) contains both navy and grey strokes — placing
+  // it directly on the navy brand background makes the navy strokes vanish. The light
+  // badge underneath gives the logo full contrast while staying on-brand.
   const NAVY = { r: 0x2a, g: 0x38, b: 0x50, alpha: 1 };
-  const GOLD = "#DFC07C";
 
-  // Resize the logo to fit comfortably within the OG canvas
-  const logoSize = 360;
+  // Resize the logo to fit comfortably inside the badge
+  const logoSize = 320;
   const logoBuffer = await sharp(ogLogoSrc)
     .resize(logoSize, logoSize, {
       fit: "contain",
@@ -40,7 +40,7 @@ async function run() {
     .png()
     .toBuffer();
 
-  // Subtle blueprint grid overlay (gold lines on navy)
+  // Subtle blueprint grid overlay (gold lines on navy) + warm glow
   const gridSvg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
     <defs>
       <pattern id="g" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -55,6 +55,28 @@ async function run() {
     <rect width="100%" height="100%" fill="url(#glow)"/>
   </svg>`);
 
+  // Light brand badge under the logo: rounded card with soft shadow + thin gold border
+  const badgeSize = 410;
+  const badgeX = 65;
+  const badgeY = 110;
+  const badgeSvg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+    <defs>
+      <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+        <feOffset dx="0" dy="8" result="offsetblur"/>
+        <feComponentTransfer><feFuncA type="linear" slope="0.32"/></feComponentTransfer>
+        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <rect x="${badgeX}" y="${badgeY}" width="${badgeSize}" height="${badgeSize}" rx="32" ry="32"
+          fill="#F4F5F7" filter="url(#soft)"/>
+    <rect x="${badgeX}" y="${badgeY}" width="${badgeSize}" height="${badgeSize}" rx="32" ry="32"
+          fill="none" stroke="#DFC07C" stroke-width="1.5" stroke-opacity="0.55"/>
+  </svg>`);
+
+  const logoLeft = badgeX + Math.round((badgeSize - logoSize) / 2);
+  const logoTop = badgeY + Math.round((badgeSize - logoSize) / 2);
+
   const textSvg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
     <style>
       .eyebrow { font: 400 22px 'Helvetica Neue', Arial, sans-serif; fill: #DFC07C; letter-spacing: 4px; }
@@ -62,12 +84,12 @@ async function run() {
       .sub { font: 400 28px 'Helvetica Neue', Arial, sans-serif; fill: rgba(255,255,255,0.78); }
       .meta { font: 500 22px 'Helvetica Neue', Arial, sans-serif; fill: #DFC07C; letter-spacing: 2px; }
     </style>
-    <text x="540" y="170" class="eyebrow">ENGINEERING &amp; CONSTRUCTION</text>
-    <text x="540" y="250" class="h1">Gabi Fadlun</text>
-    <line x1="540" y1="275" x2="650" y2="275" stroke="#DFC07C" stroke-width="3"/>
-    <text x="540" y="345" class="sub">Project Management &amp; Site Supervision</text>
-    <text x="540" y="385" class="sub">10+ years · Banks · Hotels · TAMA 38 · Luxury</text>
-    <text x="540" y="510" class="meta">+972 50 774 7162</text>
+    <text x="555" y="170" class="eyebrow">ENGINEERING &amp; CONSTRUCTION</text>
+    <text x="555" y="250" class="h1">Gabi Fadlun</text>
+    <line x1="555" y1="275" x2="665" y2="275" stroke="#DFC07C" stroke-width="3"/>
+    <text x="555" y="345" class="sub">Project Management &amp; Site Supervision</text>
+    <text x="555" y="385" class="sub">10+ years · Banks · Hotels · TAMA 38 · Luxury</text>
+    <text x="555" y="510" class="meta">+972 50 774 7162</text>
   </svg>`);
 
   await sharp({
@@ -80,7 +102,8 @@ async function run() {
   })
     .composite([
       { input: gridSvg, top: 0, left: 0 },
-      { input: logoBuffer, top: 135, left: 90 },
+      { input: badgeSvg, top: 0, left: 0 },
+      { input: logoBuffer, top: logoTop, left: logoLeft },
       { input: textSvg, top: 0, left: 0 },
     ])
     .png({ compressionLevel: 9 })
