@@ -4,31 +4,35 @@ const path = require("path");
 const fs = require("fs");
 
 const root = path.join(__dirname, "..");
-const src = path.join(root, "logo_small.png");
+const iconSrc = path.join(root, "logo_small.png");
+const ogLogoSrc = path.join(root, "logo_small-removebg.png");
 const appDir = path.join(root, "src", "app");
 
 async function run() {
-  if (!fs.existsSync(src)) throw new Error(`Missing ${src}`);
+  if (!fs.existsSync(iconSrc)) throw new Error(`Missing ${iconSrc}`);
+  if (!fs.existsSync(ogLogoSrc)) throw new Error(`Missing ${ogLogoSrc}`);
 
   // Favicon (32x32 ICO would be ideal, but Next handles PNG → favicon via icon.png convention)
-  await sharp(src)
+  await sharp(iconSrc)
     .resize(512, 512, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } })
     .png({ compressionLevel: 9 })
     .toFile(path.join(appDir, "icon.png"));
 
   // Apple touch icon
-  await sharp(src)
+  await sharp(iconSrc)
     .resize(180, 180, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } })
     .png({ compressionLevel: 9 })
     .toFile(path.join(appDir, "apple-icon.png"));
 
   // OG image: 1200x630 navy background + logo + gold underline + text
+  // Use the transparent (removebg) variant so the logo composites cleanly
+  // onto the navy brand background instead of carrying its own grey backdrop
   const NAVY = { r: 0x2a, g: 0x38, b: 0x50, alpha: 1 };
   const GOLD = "#DFC07C";
 
   // Resize the logo to fit comfortably within the OG canvas
   const logoSize = 360;
-  const logoBuffer = await sharp(src)
+  const logoBuffer = await sharp(ogLogoSrc)
     .resize(logoSize, logoSize, {
       fit: "contain",
       background: { r: 0, g: 0, b: 0, alpha: 0 },
