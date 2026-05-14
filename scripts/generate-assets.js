@@ -24,12 +24,13 @@ async function run() {
     .png({ compressionLevel: 9 })
     .toFile(path.join(appDir, "apple-icon.png"));
 
-  // OG image: simple square thumbnail — just the logo on the brand light-grey
-  // background. WhatsApp / iMessage / Telegram show this next to the page title
-  // and description from the meta tags. Square format + summary card setting in
-  // metadata makes WhatsApp render the compact preview style.
-  const OG_SIZE = 800;
-  const LOGO_FRAC = 0.62; // logo occupies ~62% of canvas, comfortable padding
+  // OG image: small square thumbnail — just the logo on a white background.
+  // WhatsApp picks the layout based on og:image dimensions:
+  //   - Large (≥ ~600px wide) → big card with image on top
+  //   - Small (~300–400px) → compact side-by-side preview (what we want)
+  // Keeping it at 360 forces the compact, "small thumbnail next to text" style.
+  const OG_SIZE = 360;
+  const LOGO_FRAC = 0.7; // tighter padding since the canvas is small
   const logoPx = Math.round(OG_SIZE * LOGO_FRAC);
 
   const ogLogoBuffer = await sharp(ogLogoSrc)
