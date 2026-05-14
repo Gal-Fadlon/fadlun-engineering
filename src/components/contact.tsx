@@ -11,14 +11,22 @@ export default function Contact() {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const name = encodeURIComponent(String(data.get("name") ?? ""));
-    const phone = encodeURIComponent(String(data.get("phone") ?? ""));
-    const message = encodeURIComponent(String(data.get("message") ?? ""));
-    const subject = encodeURIComponent(`פנייה מאתר – ${decodeURIComponent(name)}`);
-    const body = encodeURIComponent(
-      `שם: ${decodeURIComponent(name)}\nטלפון: ${decodeURIComponent(phone)}\n\nהודעה:\n${decodeURIComponent(message)}`,
-    );
-    window.location.href = `mailto:GABIFAD@GMAIL.COM?subject=${subject}&body=${body}`;
+    const name = String(data.get("name") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    const lines = [
+      `שלום גבי, פנייה מאתר:`,
+      ``,
+      `שם: ${name}`,
+      `טלפון: ${phone}`,
+    ];
+    if (message) lines.push(``, `פירוט הפרויקט:`, message);
+
+    const text = encodeURIComponent(lines.join("\n"));
+    const url = `https://wa.me/972507747162?text=${text}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
     setSent(true);
   };
 
@@ -156,7 +164,7 @@ export default function Contact() {
                 type="tel"
                 pattern="[0-9-+ ]{7,}"
                 className="input-field"
-                dir="ltr"
+                dir="rtl"
               />
             </motion.div>
 
@@ -168,18 +176,26 @@ export default function Contact() {
             </motion.div>
 
             <motion.div variants={fadeUp} className="pt-2 flex flex-wrap gap-3 items-center">
-              <button type="submit" className="btn-primary">
-                שליחה
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{ background: "#25D366", borderColor: "#1FAD52", color: "#fff" }}
+              >
+                <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" aria-hidden>
+                  <path d="M16.001 3C9.376 3 4 8.375 4 14.999c0 2.351.677 4.547 1.85 6.412L4 29l7.787-1.84a11.94 11.94 0 0 0 4.214.762h.001C22.624 27.922 28 22.547 28 15.923 28 9.299 22.625 3 16.001 3zm5.45 14.585c-.297-.149-1.766-.871-2.039-.971-.273-.099-.471-.149-.67.149-.198.297-.768.971-.943 1.17-.173.198-.347.223-.644.074-.297-.148-1.257-.464-2.394-1.477-.886-.79-1.484-1.764-1.659-2.062-.173-.297-.018-.458.13-.605.134-.133.297-.347.446-.52.149-.174.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.148-.67-1.617-.918-2.213-.242-.581-.487-.502-.67-.512-.173-.008-.371-.01-.57-.01a1.09 1.09 0 0 0-.793.371c-.273.297-1.041 1.017-1.041 2.48s1.066 2.876 1.214 3.074c.149.198 2.095 3.2 5.075 4.487.71.306 1.262.488 1.694.624.712.227 1.36.195 1.872.118.572-.085 1.766-.722 2.015-1.42.248-.696.248-1.292.173-1.419-.074-.124-.272-.198-.57-.347z"/>
+                </svg>
+                שליחה ב-WhatsApp
               </button>
               {sent && (
                 <span className="text-sm text-[var(--color-muted)]">
-                  נפתח לקוח הדוא״ל שלך…
+                  נפתח חלון WhatsApp עם פרטי הפנייה — שלחו כדי לסיים.
                 </span>
               )}
             </motion.div>
 
             <motion.p variants={fadeUp} className="text-xs text-[var(--color-muted)] pt-2">
-              בלחיצה על שליחה אתם מאשרים שניתן לחזור אליכם טלפונית או במייל.
+              בלחיצה על שליחה נפתח חלון WhatsApp עם פרטי הפנייה מוכנים — אישור
+              ושליחה מסיימים את התהליך.
             </motion.p>
           </div>
         </motion.form>

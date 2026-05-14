@@ -33,7 +33,7 @@ export default function Hero() {
         viewport={viewportOnce}
         className="relative max-w-[1200px] mx-auto px-6 md:px-10 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center"
       >
-        <div className="order-2 lg:order-1 text-right">
+        <div className="text-right">
           <motion.p variants={fadeUp} className="eyebrow text-[var(--color-accent-deep)] mb-5 inline-block">
             GABI FADLUN · ENGINEERING & CONSTRUCTION
           </motion.p>
@@ -93,10 +93,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          variants={fadeUp}
-          className="order-1 lg:order-2 relative"
-        >
+        <motion.div variants={fadeUp} className="relative">
           <div
             className="relative aspect-square w-full max-w-[560px] mx-auto rounded-[28px] overflow-hidden"
             style={{

@@ -31,15 +31,15 @@ export default function Nav() {
           : "bg-white/60 backdrop-blur"
       }`}
     >
-      <nav className="max-w-[1200px] mx-auto h-[78px] px-6 md:px-10 flex items-center justify-between">
+      <nav className="max-w-[1200px] mx-auto h-[88px] px-6 md:px-10 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-3" aria-label="גבי פדלון – הנדסה ובניה">
           <Image
-            src="/logo.png"
+            src="/logo.jpg"
             alt="גבי פדלון – הנדסה ובניה"
-            width={220}
-            height={120}
+            width={290}
+            height={100}
             priority
-            className="h-12 md:h-14 w-auto object-contain"
+            className="h-[50px] md:h-[64px] w-auto object-contain"
           />
         </a>
 

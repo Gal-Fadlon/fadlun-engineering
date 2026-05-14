@@ -7,6 +7,7 @@ import Process from "@/components/process";
 import Certifications from "@/components/certifications";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
+import WhatsAppFloat from "@/components/whatsapp-float";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </>
   );
 }

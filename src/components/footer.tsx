@@ -27,10 +27,10 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 grid md:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10">
         <div>
           <Image
-            src="/logo.png"
+            src="/logo-mark.png"
             alt="גבי פדלון – הנדסה ובניה"
-            width={260}
-            height={140}
+            width={120}
+            height={112}
             className="h-16 w-auto object-contain"
           />
           <p className="mt-5 text-[var(--color-muted)] text-sm leading-relaxed max-w-xs">
