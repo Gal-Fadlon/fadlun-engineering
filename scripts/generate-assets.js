@@ -47,7 +47,7 @@ async function run() {
       width: OG_SIZE,
       height: OG_SIZE,
       channels: 4,
-      background: { r: 0xf4, g: 0xf5, b: 0xf7, alpha: 1 },
+      background: { r: 0xff, g: 0xff, b: 0xff, alpha: 1 },
     },
   })
     .composite([{ input: ogLogoBuffer, top: logoOffset, left: logoOffset }])
