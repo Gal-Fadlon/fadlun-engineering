@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand colors */
+  --color-primary: #2a3850;
+  --color-primary-soft: #34425a;
+  --color-accent: #dfc07c;
+  --color-accent-hover: #debf7c;
+  --color-accent-deep: #c6ac78;
+  --color-bg: #f2f3f5;
+  --color-bg-alt: #f7f8fa;
+  --color-bg-tint: #fafafb;
+  --color-surface: #ffffff;
+  --color-ink: #121212;
+  --color-ink-soft: #131313;
+  --color-text: #000000;
+  --color-muted: #6b6b6b;
+  --color-border: rgba(112, 112, 112, 0.2);
+  --color-divider: rgba(214, 214, 214, 0.6);
+  --color-border-input: #483b34;
+  --color-overlay-primary: rgba(42, 56, 80, 0.8);
+  --color-overlay-dark: rgba(0, 0, 0, 0.7);
+
+  /* Shadows */
+  --shadow-header: 0 10px 20px 0 rgb(0 0 0 / 4%);
+  --shadow-card: 0 12px 40px -16px rgba(42, 56, 80, 0.18);
+  --shadow-card-hover: 0 24px 60px -20px rgba(42, 56, 80, 0.28);
+
+  /* Radius */
+  --radius-pill: 25px;
+  --radius-card: 14px;
+
+  /* Motion */
+  --t-default: 0.4s;
+  --t-slow: 0.6s;
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Type sizes (scaled with clamp for responsiveness) */
+  --fs-hero: clamp(2.5rem, 6vw, 4.4rem);
+  --fs-h2: clamp(2rem, 4.5vw, 3.8rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.5rem);
+  --fs-h4: 1.1875rem;
+  --fs-subtitle: clamp(1.125rem, 1.8vw, 1.5rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-xs: 0.75rem;
+  --ls-subtitle: 0.18em;
+  --lh-body: 1.37;
+}
+
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --color-surface: var(--color-surface);
+  --color-muted: var(--color-muted);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-accent: var(--font-accent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* Brand-aware utility classes */
+.eyebrow {
+  font-family: var(--font-accent), "Poppins", sans-serif;
+  font-size: var(--fs-subtitle);
+  color: var(--color-accent);
+  letter-spacing: var(--ls-subtitle);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.heading-display {
+  font-family: var(--font-heading), "Heebo", sans-serif;
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.heading-display-light {
+  color: var(--color-surface);
+}
+
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+.gold-underline::after {
+  content: "";
+  display: block;
+  width: 87px;
+  height: 2px;
+  background: var(--color-accent);
+  margin-top: 14px;
+}
+.gold-underline.center::after {
+  margin-inline: auto;
+}
+
+/* Ghost button (default CTA on light) */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-body);
+  padding: 10px 22px;
+  min-width: 180px;
+  justify-content: center;
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: all var(--t-default) var(--ease-soft);
+  cursor: pointer;
+}
+.btn-ghost::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transition: transform var(--t-default) var(--ease-soft);
+}
+.btn-ghost:hover {
+  font-weight: 700;
+  background: rgba(42, 56, 80, 0.04);
+}
+.btn-ghost:hover::before {
+  transform: scale(1.15);
+}
+
+/* Primary filled */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-accent);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  min-width: 180px;
+  height: 46px;
+  padding: 0 22px;
+  justify-content: center;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  transition: all var(--t-default) var(--ease-soft);
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Inverted ghost (on dark backgrounds) */
+.btn-ghost-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-surface);
+  background: transparent;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-body);
+  padding: 10px 22px;
+  min-width: 180px;
+  justify-content: center;
+  color: var(--color-surface);
+  font-weight: 500;
+  transition: all var(--t-default) var(--ease-soft);
+  cursor: pointer;
+}
+.btn-ghost-light::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+.btn-ghost-light:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Card with 3D tilt */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform var(--t-default) var(--ease-soft);
+  will-change: transform;
+}
+
+/* Floating animation for hero ornaments */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-8px) translateX(4px); }
+}
+.float-slower { animation: float-slower 9s ease-in-out infinite; }
+
+/* Subtle blueprint grid background pattern */
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgba(42, 56, 80, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42, 56, 80, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.blueprint-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(223, 192, 124, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(223, 192, 124, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Number ticker */
+.stat-num {
+  font-family: var(--font-accent), "Poppins", sans-serif;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Form inputs (sharp edges per brand) */
+.input-field {
+  width: 100%;
+  height: 50px;
+  border: 1px solid var(--color-border-input);
+  border-radius: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--fs-body);
+  padding: 0 16px;
+  transition: border-color var(--t-default) var(--ease-soft);
+  font-family: inherit;
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+textarea.input-field {
+  height: 124px;
+  padding-top: 14px;
+  resize: vertical;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Hide scrollbar utility for horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
