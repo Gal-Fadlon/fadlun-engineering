@@ -29,8 +29,8 @@ async function run() {
   //   - Large (≥ ~600px wide) → big card with image on top
   //   - Small (~300–400px) → compact side-by-side preview (what we want)
   // Keeping it at 360 forces the compact, "small thumbnail next to text" style.
-  const OG_SIZE = 240;
-  const LOGO_FRAC = 0.78; // tight padding since the canvas is small
+  const OG_SIZE = 160;
+  const LOGO_FRAC = 0.82;
   const logoPx = Math.round(OG_SIZE * LOGO_FRAC);
 
   const ogLogoBuffer = await sharp(ogLogoSrc)
